@@ -35,6 +35,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -62,13 +63,14 @@ import com.non.composetest.R
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
-fun ReminderScreen(onClick: () -> Unit) {
+fun ReminderScreen() {
     val default = 0
 
-    var expanded by remember { mutableStateOf(false) }
+    var expanded by remember { mutableStateOf(true) }
 
     // visible state
-    var visible by remember { mutableStateOf(true)}
+    var state by remember { mutableStateOf(false) }
+
 
     val gradientBrush = Brush.verticalGradient(
         colors = listOf(Color(0xFF0090F6), Color(0xFF004DF4)), // Gradient colors
@@ -115,7 +117,7 @@ fun ReminderScreen(onClick: () -> Unit) {
                 ) {
 
                     // Enable to animate
-                    AnimatedVisibility(visible = visible) {
+                    AnimatedVisibility(visible = state) {
                         Box(
                             modifier = Modifier
                                 .background(brush = gradientBrush)
@@ -209,7 +211,7 @@ fun ReminderScreen(onClick: () -> Unit) {
                         ) {
 
                             Image(
-                                painter = painterResource(id = R.drawable.ic_notify),
+                                painter = if(state) painterResource(id = R.drawable.ic_notify) else painterResource(id = R.drawable.ic_notify_disabled),
                                 contentDescription = "image",
                                 contentScale = ContentScale.Crop,
                                 modifier = Modifier
@@ -224,12 +226,17 @@ fun ReminderScreen(onClick: () -> Unit) {
                                 fontSize = 18.sp, color = Color.Black,
                             )
 
+
+
                             DarkModeSwitch(
-                                visible,
-                                Modifier.height(28.dp).width(60.dp)
+                                state,
+                                Modifier
+                                    .height(28.dp)
+                                    .width(60.dp)
                             ) {
-                                visible = it
+                                state = it
                             }
+
 
 
                         }
@@ -250,7 +257,7 @@ fun ReminderScreen(onClick: () -> Unit) {
         ) {
             Box(
                 modifier = Modifier
-                    .background(Color.White)
+                    .background(if (state) Color.White else Color(0xFFEFEFF3))
                     .padding(15.dp, 21.dp, 15.dp, 21.dp)
                     .fillMaxSize()
             ) {
@@ -263,7 +270,8 @@ fun ReminderScreen(onClick: () -> Unit) {
                         "Schedule",
                         modifier = Modifier,
                         fontFamily = FontFamily(Font(R.font.nunito_bold)),
-                        fontSize = 18.sp, color = colorResource(R.color.title_h1),
+                        fontSize = 18.sp,
+                        color = if (state) colorResource(R.color.title_h1) else Color(0xFF898C8E),
                         fontWeight = FontWeight(900)
                     )
 
@@ -304,8 +312,11 @@ fun ReminderScreen(onClick: () -> Unit) {
                                             modifier = Modifier,
                                             fontFamily = FontFamily(Font(R.font.nunito_bold)),
                                             fontSize = 16.sp,
-                                            color = colorResource(R.color.title_h2),
+                                            color = if (state) colorResource(R.color.title_h2) else Color(
+                                                0xFF898C8E
+                                            ),
                                             fontWeight = FontWeight(700)
+
                                         )
 
                                     }
@@ -318,7 +329,9 @@ fun ReminderScreen(onClick: () -> Unit) {
                                             modifier = Modifier,
                                             fontFamily = FontFamily(Font(R.font.nunito_bold)),
                                             fontSize = 14.sp,
-                                            color = colorResource(R.color.title_h3),
+                                            color = if (state) colorResource(R.color.title_h3) else Color(
+                                                0xFFDDE2E8
+                                            ),
                                             fontWeight = FontWeight(500)
                                         )
 
@@ -340,7 +353,7 @@ fun ReminderScreen(onClick: () -> Unit) {
                                             "13:00",
                                             "14:00"
                                         )
-                                        ExposedDropdownMenuSample(list)
+                                        ExposedDropdownMenuSample(list, state)
                                     }
                                 }
                             }
@@ -373,7 +386,9 @@ fun ReminderScreen(onClick: () -> Unit) {
                                             modifier = Modifier,
                                             fontFamily = FontFamily(Font(R.font.nunito_bold)),
                                             fontSize = 16.sp,
-                                            color = colorResource(R.color.title_h2),
+                                            color = if (state) colorResource(R.color.title_h2) else Color(
+                                                0xFF898C8E
+                                            ),
                                             fontWeight = FontWeight(700)
                                         )
 
@@ -387,7 +402,9 @@ fun ReminderScreen(onClick: () -> Unit) {
                                             modifier = Modifier,
                                             fontFamily = FontFamily(Font(R.font.nunito_bold)),
                                             fontSize = 14.sp,
-                                            color = colorResource(R.color.title_h3),
+                                            color = if (state) colorResource(R.color.title_h3) else Color(
+                                                0xFFDDE2E8
+                                            ),
                                             fontWeight = FontWeight(500)
                                         )
 
@@ -409,7 +426,7 @@ fun ReminderScreen(onClick: () -> Unit) {
                                             "18:00",
                                             "19:00"
                                         )
-                                        ExposedDropdownMenuSample(list)
+                                        ExposedDropdownMenuSample(list, state)
                                     }
                                 }
                             }
@@ -449,7 +466,9 @@ fun ReminderScreen(onClick: () -> Unit) {
                                             modifier = Modifier,
                                             fontFamily = FontFamily(Font(R.font.nunito_bold)),
                                             fontSize = 16.sp,
-                                            color = colorResource(R.color.title_h2),
+                                            color = if (state) colorResource(R.color.title_h2) else Color(
+                                                0xFF898C8E
+                                            ),
                                             fontWeight = FontWeight(700)
                                         )
 
@@ -463,7 +482,9 @@ fun ReminderScreen(onClick: () -> Unit) {
                                             modifier = Modifier,
                                             fontFamily = FontFamily(Font(R.font.nunito_bold)),
                                             fontSize = 14.sp,
-                                            color = colorResource(R.color.title_h3),
+                                            color = if (state) colorResource(R.color.title_h3) else Color(
+                                                0xFFDDE2E8
+                                            ),
                                             fontWeight = FontWeight(500)
                                         )
 
@@ -483,7 +504,7 @@ fun ReminderScreen(onClick: () -> Unit) {
                                             "Every 4h",
                                             "Every 5h"
                                         )
-                                        ExposedDropdownMenuSample(list)
+                                        ExposedDropdownMenuSample(list, state)
                                     }
                                 }
                             }
@@ -508,7 +529,7 @@ fun ReminderScreen(onClick: () -> Unit) {
         ) {
             Box(
                 modifier = Modifier
-                    .background(Color.White)
+                    .background(if (state) Color.White else Color(0xFFEFEFF3))
                     .padding(15.dp, 21.dp, 15.dp, 21.dp)
                     .fillMaxSize()
             ) {
@@ -529,7 +550,8 @@ fun ReminderScreen(onClick: () -> Unit) {
                             "Message",
                             modifier = Modifier,
                             fontFamily = FontFamily(Font(R.font.nunito_bold)),
-                            fontSize = 18.sp, color = colorResource(R.color.title_h1),
+                            fontSize = 18.sp,
+                            color = if (state) colorResource(R.color.title_h1) else Color(0xFF898C8E),
                             fontWeight = FontWeight(900)
                         )
 
@@ -580,7 +602,9 @@ fun ReminderScreen(onClick: () -> Unit) {
                                             modifier = Modifier,
                                             fontFamily = FontFamily(Font(R.font.nunito_bold)),
                                             fontSize = 16.sp,
-                                            color = colorResource(R.color.title_h2),
+                                            color = if (state) colorResource(R.color.title_h2) else Color(
+                                                0xFF898C8E
+                                            ),
                                             fontWeight = FontWeight(700)
                                         )
                                     }
@@ -593,7 +617,7 @@ fun ReminderScreen(onClick: () -> Unit) {
                                             modifier = Modifier,
                                             fontFamily = FontFamily(Font(R.font.nunito_bold)),
                                             fontSize = 14.sp,
-                                            color = colorResource(R.color.title_h3),
+                                            color = if (state) colorResource(R.color.title_h3) else Color(0xFFDDE2E8),
                                             fontWeight = FontWeight(500)
                                         )
 
@@ -622,7 +646,7 @@ fun ReminderScreen(onClick: () -> Unit) {
         ) {
             Box(
                 modifier = Modifier
-                    .background(Color.White)
+                    .background(if (state) Color.White else Color(0xFFEFEFF3))
                     .padding(15.dp, 21.dp, 15.dp, 21.dp)
                     .fillMaxSize()
             ) {
@@ -643,7 +667,8 @@ fun ReminderScreen(onClick: () -> Unit) {
                             "Notification Sound",
                             modifier = Modifier,
                             fontFamily = FontFamily(Font(R.font.nunito_bold)),
-                            fontSize = 18.sp, color = colorResource(R.color.title_h1),
+                            fontSize = 18.sp,
+                            color = if (state) colorResource(R.color.title_h1) else Color(0xFF898C8E),
                             fontWeight = FontWeight(900)
                         )
 
@@ -697,8 +722,7 @@ fun ReminderScreen(onClick: () -> Unit) {
                                         modifier = Modifier,
                                         fontFamily = FontFamily(Font(R.font.nunito_bold)),
                                         fontSize = 16.sp,
-                                        color = colorResource(R.color.title_h2),
-                                        fontWeight = FontWeight(700)
+                                        color = if (state) colorResource(R.color.title_h2) else Color(0xFF898C8E),                                        fontWeight = FontWeight(700)
                                     )
                                 }
 
@@ -712,7 +736,7 @@ fun ReminderScreen(onClick: () -> Unit) {
                                         modifier = Modifier,
                                         fontFamily = FontFamily(Font(R.font.nunito_bold)),
                                         fontSize = 14.sp,
-                                        color = colorResource(R.color.title_h3),
+                                        color = if (state) colorResource(R.color.title_h3) else Color(0xFFDDE2E8),
                                         fontWeight = FontWeight(500)
                                     )
                                 }
@@ -736,7 +760,7 @@ fun ReminderScreen(onClick: () -> Unit) {
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun ExposedDropdownMenuSample(list: List<String>) {
+    fun ExposedDropdownMenuSample(list: List<String>, state: Boolean) {
 
     var expanded by remember { mutableStateOf(false) }
     var expandedShape by remember { mutableStateOf(false) }
@@ -751,7 +775,7 @@ fun ExposedDropdownMenuSample(list: List<String>) {
             modifier = Modifier
                 .menuAnchor()
                 .wrapContentHeight(),
-            value = text,
+            value = if (state) text else "--:--",
             onValueChange = {
             },
             shape = roundedShape,
@@ -762,7 +786,9 @@ fun ExposedDropdownMenuSample(list: List<String>) {
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 focusedBorderColor = Color(0xFF1675FF),
                 unfocusedBorderColor = Color.Transparent,
-                containerColor = Color(0xFFEFEFF3)
+                containerColor = Color(0xFFEFEFF3),
+                focusedTrailingIconColor = Color(0xFF141A1E),
+                unfocusedTrailingIconColor = if(state) Color(0xFF141A1E) else Color(0xFF898C8E)
             ),
         )
         MaterialTheme(
